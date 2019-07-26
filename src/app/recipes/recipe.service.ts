@@ -6,7 +6,8 @@ import { ShoppingListService } from '../shopping-list/shopping-list.service';
 @Injectable()
 export class RecipeService {
   private recipes: Recipe[] = [
-    new Recipe('Chicken Schnitzel',
+    new Recipe(1,
+      'Chicken Schnitzel',
       'Best Schnitzel Recipe Ever!!!',
       'https://upload.wikimedia.org/wikipedia/commons/7/72/Schnitzel.JPG',
       [
@@ -14,7 +15,8 @@ export class RecipeService {
         new Ingredient('French Fries', 20),
         new Ingredient('Lemon', 1)
       ]),
-    new Recipe('Spaghetti',
+    new Recipe(2,
+      'Spaghetti',
       'Just Like Grandma Rosa Used to Make!!!',
       'https://upload.wikimedia.org/wikipedia/commons/2/2a/Spaghetti_al_Pomodoro.JPG',
       [
@@ -35,5 +37,9 @@ export class RecipeService {
 
   addIngredientsToShoppingList(ingredients: Ingredient[]) {
     this.shoppingListService.addIngredients(ingredients);
+  }
+
+  getRecipeById(id: number) {
+    return this.recipes.find(recipe => recipe.id === id);
   }
 }
