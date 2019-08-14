@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+import { AuthComponent } from './auth/auth.component';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { RecipesComponent } from './recipes/recipes.component';
@@ -17,7 +18,11 @@ import { Routes, RouterModule } from '@angular/router';
 import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 import { RecipeService } from './recipes/recipe.service';
-import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from './auth/auth.service';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
+import { AuthInterceptorService } from './auth/auth-interceptor.service';
+import { AuthGuard } from './auth/auth.guard';
 
 // const appRoutes: Routes = [
 //   { path: '', component: }
@@ -35,7 +40,9 @@ import { HttpClientModule } from '@angular/common/http';
     ShoppingEditComponent,
     DropdownDirective,
     RecipeStartComponent,
-    RecipeEditComponent
+    RecipeEditComponent,
+    AuthComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +53,17 @@ import { HttpClientModule } from '@angular/common/http';
     // ,
     // RouterModule.forRoot(appRoutes)
   ],
-  providers: [ShoppingListService, RecipeService],
+  providers: [
+    ShoppingListService,
+    RecipeService,
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+    },
+    AuthGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
